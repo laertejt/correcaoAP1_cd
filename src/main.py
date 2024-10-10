@@ -16,12 +16,12 @@ from pacote_bolsa.modulo_bolsa import (filtrar_duplicado,
                                       pegar_df_preco_diversos,
                                       calcular_rentabilidade)
 # Parametros de entrada 
-data_base = date(2023,4,3)
-data_ini = date(2023,4,4)
-data_fim = date(2024,4,1)
-ticker='ibov'# Benchmark - Pegar preço do ibov
-num_carteira = 10
-lst_indicadores = ['roc', 'earning_yield']
+data_base = date(2023,4,3)# data base para selecionar as acoes da carteira
+data_ini = date(2023,4,4)# data inicio do periodo para medir a rentabilidade
+data_fim = date(2024,4,1)# data fim do periodo para medir a rentabilidade
+ticker='ibov'# Benchmark para comparar com o rendimento da carteira
+num_carteira = 10 # numero de ações na carteira
+lst_indicadores = ['roc', 'earning_yield'] # indicadores para selecionar a carteira
 
 def main():
   try:
