@@ -21,7 +21,7 @@ data_ini = date(2023,4,4)
 data_fim = date(2024,4,1)
 ticker='ibov'# Benchmark - Pegar preço do ibov
 num_carteira = 10
-lst_indicadores = ['roic', 'earning_yield']
+lst_indicadores = ['roc', 'earning_yield']
 
 def main():
   try:
