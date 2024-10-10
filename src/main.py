@@ -1,7 +1,7 @@
 import pandas as pd
 import os
 from pathlib import Path
-from datetime import date, datetime
+from datetime import date
 DATA_DIR = str(Path(os.path.dirname(__file__)).parent) + '/data'
 LOG_DIR = str(Path(os.path.dirname(__file__)).parent) + '/logs'
 import logging # Configuração básica do logging
@@ -34,7 +34,7 @@ def main():
     df = filtrar_duplicado(planilhao)
     col = ['ticker', 'empresa', 'setor', 'volume', 'enterprise_value'] + lst_indicadores
     df = df.loc[:,col]
-    # Seleção dos ativos baseados nos indicadores e qtde de ativos na carteira
+    # Seleção dos ativos baseado nos indicadores definidos nos parametros de entrada
     df['rank_rentabilidade'] = df[lst_indicadores[0]].rank()
     df['rank_desconto'] = df[lst_indicadores[1]].rank()
     df['rank'] = df.rank_rentabilidade + df.rank_desconto
@@ -42,14 +42,12 @@ def main():
     carteira = df.ticker.values[:num_carteira]
     logger.info(f'carteira formada: {carteira}')
     print(f'carteira formada: {carteira}')
-    # Backtest de 12 meses
     df_preco = pegar_df_preco_corrigido(data_ini, data_fim, carteira)# Criação do df de precos para verificar a rentabilidade carteira
     df_preco['data'] = pd.to_datetime(df_preco['data']).dt.date # transformar para o formato de date
     logger.info("df_preco finalizado com sucesso")
     print("df_preco finalizado com sucesso")
     df_preco.to_csv(DATA_DIR + '/preco.csv')
-    # Pegar Benchmark
-    dados = pegar_df_preco_diversos(ticker, data_ini, data_fim)
+    dados = pegar_df_preco_diversos(ticker, data_ini, data_fim)# Pegar Benchmark
     ibov = pd.DataFrame.from_dict(dados)
     ibov['data'] = pd.to_datetime(ibov['data']).dt.date # transformar para o formato de date
     ibov.to_csv(DATA_DIR + '/ibov.csv')
