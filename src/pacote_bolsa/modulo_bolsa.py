@@ -1,11 +1,10 @@
 import pandas as pd
 import requests
 import os
-from dotenv import load_dotenv
 from datetime import date
-
+from dotenv import load_dotenv
 load_dotenv()
-token = os.getenv("TOKEN_LAB_FIN")
+token = os.getenv("TOKEN")
 headers = {'Authorization': 'JWT {}'.format(token)}
 import logging
 logger = logging.getLogger(__name__)
