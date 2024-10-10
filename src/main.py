@@ -2,8 +2,8 @@ import pandas as pd
 import os
 from pathlib import Path
 from datetime import date, datetime
-BASE_DIR = str(Path(os.path.dirname(__file__)).parent.parent)
-LOG_DIR = str(Path(os.path.dirname(__file__)).parent.parent) + '/logs'
+DATA_DIR = str(Path(os.path.dirname(__file__)).parent) + '/data'
+LOG_DIR = str(Path(os.path.dirname(__file__)).parent) + '/logs'
 import logging # Configuração básica do logging
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -29,7 +29,7 @@ def main():
     print(f'Inicio do processo de formação da carteira.')
     dados = consultar_planilhao(data_base)
     planilhao = pd.DataFrame.from_dict(dados)
-    planilhao.to_csv(BASE_DIR + '/data/planilhao.csv')
+    planilhao.to_csv(DATA_DIR + '/planilhao.csv')
     planilhao['empresa'] = [ticker[:4] for ticker in planilhao.ticker.values]
     df = filtrar_duplicado(planilhao)
     col = ['ticker', 'empresa', 'setor', 'volume', 'enterprise_value'] + lst_indicadores
@@ -47,12 +47,12 @@ def main():
     df_preco['data'] = pd.to_datetime(df_preco['data']).dt.date # transformar para o formato de date
     logger.info("df_preco finalizado com sucesso")
     print("df_preco finalizado com sucesso")
-    df_preco.to_csv(BASE_DIR + '/data/preco.csv')
+    df_preco.to_csv(DATA_DIR + '/preco.csv')
     # Pegar Benchmark
     dados = pegar_df_preco_diversos(ticker, data_ini, data_fim)
     ibov = pd.DataFrame.from_dict(dados)
     ibov['data'] = pd.to_datetime(ibov['data']).dt.date # transformar para o formato de date
-    ibov.to_csv(BASE_DIR + '/data/ibov.csv')
+    ibov.to_csv(DATA_DIR + '/ibov.csv')
     lst_preco = ibov.loc[(ibov.data.isin([data_ini, data_fim])), 'fechamento'].values
     rend = (lst_preco[1]/lst_preco[0] - 1)
     rendimento = calcular_rentabilidade(df_preco, data_ini, data_fim, carteira)
